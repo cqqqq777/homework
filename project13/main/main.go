@@ -3,59 +3,40 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strconv"
+	"strings"
 )
 
-type Interface interface {
-	//Len 方法返回集合中的元素个数
-	Len() int
-	//Less 方法报告索引i的元素是否比索引j的元素小
-	Less(i, j int) bool
-	//Swap 方法交换索引i和j的两个元素
-	Swap(i, j int)
-}
+type aa []int64
 
-type Student struct {
-	Name   string
-	StuNum int
-}
+func (d aa) Len() int { return len(d) }
 
-// 自定义“学生”切片类型存储学生数据
-type database []Student
+func (d aa) Less(i, j int) bool { return d[i] < d[j] }
 
-//让database实现接口,以调用sort包中的函数进行排序
+func (d aa) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
 
-func (d database) Len() int {
-	return len(d)
-}
-
-func (d database) Less(i, j int) bool {
-	if d[i].StuNum < d[j].StuNum {
-		return true
+func main() {
+	var str string
+	var a aa
+	fmt.Println("请输入想排序的一组整数(用逗号隔开)：")
+	_, err := fmt.Scanln(&str)
+	if err != nil {
+		fmt.Println(err)
+		return
 	} else {
-		return false
+		str1 := strings.Split(str, ",")
+		for _, val := range str1 {
+			b, err1 := strconv.ParseInt(val, 10, 0)
+			if err1 != nil {
+				fmt.Println(err1)
+				return
+			} else {
+				a = append(a, b)
+			}
+		}
 	}
-}
-
-func (d database) Swap(i, j int) {
-	d[i], d[j] = d[j], d[i]
-}
-
-func sort1() {
-	data := database{
-		{"小明", 2022192},
-		{"小红", 2022999},
-		{"小刚", 2022544},
-		{"小美", 2022098},
-	}
-	//输出原始顺序的姓名和学号
-	for i := 0; i < len(data); i++ {
-		fmt.Println("姓名:"+data[i].Name, "学号:", data[i].StuNum)
-	}
-	fmt.Println()
-	//使用标准库中的sort.Stable函数按学号排序
-	sort.Stable(data)
-	//输出按学号升序排序后的姓名和学号
-	for i := 0; i < len(data); i++ {
-		fmt.Println("姓名:"+data[i].Name, "学号:", data[i].StuNum)
+	sort.Stable(a)
+	for _, val1 := range a {
+		fmt.Printf("%d ", val1)
 	}
 }
