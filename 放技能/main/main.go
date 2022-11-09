@@ -20,7 +20,7 @@ func Add() {
 	var Skill skill
 	var name, words string
 	var num int
-	fmt.Println("请输入你想添加的技能名称并为其编号（先输入技能名称后输入编号，之间使用空格或换行符隔开，技能编号不小于2）：")
+	fmt.Println("请输入你想添加的技能名称并为其编号（先输入技能名称后输入编号，之间使用空格或换行符隔开，技能编号不小于2且不能与已添加的技能编号重复）：")
 	_, err := fmt.Scan(&name, &num)
 	if err != nil {
 		fmt.Println("输入失败")
