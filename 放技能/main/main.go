@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // 抽象出skill的属性
@@ -25,10 +26,18 @@ func Add() {
 		fmt.Println("输入失败")
 		return
 	}
+	if senWords(name) {
+		fmt.Println("警告：请不要包含敏感词")
+		return
+	}
 	fmt.Println("请输入你想要与此技能绑定的模板（如“尝尝我的厉害吧!!!”）：")
 	_, err2 := fmt.Scan(&words)
 	if err2 != nil {
 		fmt.Println("输入失败")
+		return
+	}
+	if senWords(words) {
+		fmt.Println("警告：请不要包含敏感词")
 		return
 	}
 	Skill.Name = name
@@ -91,4 +100,15 @@ func system() {
 	ReleaseSkill(skillMap[a].Name, func(s string) {
 		fmt.Println(skillMap[a].Words, skillMap[a].Name)
 	})
+}
+
+// 判断敏感词
+func senWords(s string) bool {
+	var b bool
+	senWord := make([]string, 0)
+	senWord = append(senWord, "傻逼")
+	for i := 0; i < len(senWord); i++ {
+		b = strings.Contains(s, senWord[i])
+	}
+	return b
 }
