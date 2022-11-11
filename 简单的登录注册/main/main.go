@@ -55,8 +55,8 @@ lab2:
 		fmt.Scan(&a)
 		switch a {
 		case 1:
-			revise(userName, Pwd)
-			if revise(userName, Pwd) {
+			ok2 := revise(userName, Pwd)
+			if ok2 {
 				goto lab3
 			}
 		case 2:
@@ -87,7 +87,7 @@ func read() {
 				fmt.Println(err2)
 			}
 		}
-		data = buffer[:n]
+		data = append(data, buffer[:n]...)
 	}
 	err3 := json.Unmarshal(data, &userdata)
 	if err3 != nil {
@@ -128,7 +128,7 @@ func revise(u, p string) bool {
 		return true
 	}
 	fmt.Println("请输入新密码（至少8位）：")
-	fmt.Scan(b)
+	fmt.Scan(&b)
 	if len(b) < 8 {
 		fmt.Println("密码至少8位！！！")
 		return true
@@ -143,6 +143,8 @@ func revise(u, p string) bool {
 	fmt.Println("修改密码成功!")
 	return false
 }
+
+// 程序结束前将数据存到user.data中
 func storage() {
 	sto, err1 := json.Marshal(userdata)
 	if err1 != nil {

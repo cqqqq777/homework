@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// 设置全局变量来堵塞主线程或者删除某个定时器
+// 初始化三个管道用于结束内置定时器
 var (
 	Li  = make(chan int, 1)
 	Get = make(chan int, 1)
