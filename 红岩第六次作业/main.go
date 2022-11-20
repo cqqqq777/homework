@@ -9,7 +9,7 @@ import (
 func main() {
 	err := dao.InitDB()
 	if err != nil {
-		fmt.Println("link failed")
+		fmt.Println("link failed   ", err)
 		return
 	}
 	api.InitRouter()

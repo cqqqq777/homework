@@ -2,13 +2,14 @@ package dao
 
 import (
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"go_code/gin/model"
 )
 
 var db *sql.DB
 
 func InitDB() error {
-	dsn := "root:@tcp(127.0.0.1:3306)/user"
+	dsn := "root:zhaoxijun7@tcp(127.0.0.1:3306)/user"
 	var err error
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
