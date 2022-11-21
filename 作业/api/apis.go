@@ -53,6 +53,8 @@ func login(c *gin.Context) {
 	c.SetCookie("gin_cookie", "test", 3600, "/", "localhost", false, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Successful login"})
 }
+
+// 检查用户是否登录
 func check(c *gin.Context) {
 	_, err := c.Cookie("gin_cookie")
 	if err != nil {
@@ -101,6 +103,19 @@ func message(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed",
+		})
+	}
+}
+
+// 说你好
+func sayHello(c *gin.Context) {
+	_, err := c.Cookie("gin_cookie")
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"message": "游客你好"})
+	} else {
+		username := c.Query("username")
+		c.JSON(http.StatusOK, gin.H{
+			"message": username + "你好",
 		})
 	}
 }

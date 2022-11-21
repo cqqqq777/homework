@@ -24,7 +24,10 @@ func InitDB() error {
 
 // Insert 添加用户数据
 func Insert(username, password, secure string) {
-	db.Exec("insert into userinfo(username,password,secure) values(?,?,?)", username, password, secure)
+	_, err := db.Exec("insert into userinfo(username,password,secure) values(?,?,?)", username, password, secure)
+	if err != nil {
+		return
+	}
 }
 
 // Query 检查数据库里面有没有这个用户名
@@ -33,11 +36,19 @@ func Query(username string) bool {
 	if err != nil {
 		return true
 	}
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		err = rows.Close()
+		if err != nil {
+
+		}
+	}(rows)
 	var u model.User
 	//找数据库有没有这个用户，有的话返回true，没有返回false
 	for rows.Next() {
-		rows.Scan(&u.Username)
+		err = rows.Scan(&u.Username)
+		if err != nil {
+			return false
+		}
 		if username == u.Username {
 			return true
 		}
@@ -88,8 +99,8 @@ func Message(username, content, MesObj string) bool {
 // Inquire 查询留言内容与留言人
 func Inquire(username string) (string, string) {
 	//获取用户名对应的留言内容与留言人
-	row1 := db.QueryRow("select content from mesaage where mesobj=?", username)
-	row2 := db.QueryRow("select content from mesaage where mesobj=?", username)
+	row1 := db.QueryRow("select content from message where mesobj=?", username)
+	row2 := db.QueryRow("select content from message where mesobj=?", username)
 	var m model.Message
 	//把获取的数据写进结构体并返回
 	err := row1.Scan(&m.Content)
